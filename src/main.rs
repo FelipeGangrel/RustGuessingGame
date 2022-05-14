@@ -26,12 +26,13 @@ fn main() {
     ";
 
     println!("{}", game_title.green());
+    const MAX_NUMBER: u32 = 100;
 
     // Generate a random number from 1 to 100
     // The lower bound is inclusive and the upper bound is exclusive
     // If you wanted to include the upper bound, you would use `..=`
     // Example: `1..=100`
-    let secret_number = rand::thread_rng().gen_range(1..101);
+    let secret_number = rand::thread_rng().gen_range(1..MAX_NUMBER + 1);
     let mut attempts = 0;
 
     loop {
@@ -53,6 +54,15 @@ fn main() {
                 continue;
             }
         };
+
+        if (guess < 1) || (guess > MAX_NUMBER) {
+            let message = format!(
+                "Please enter a number between 1 and {}. This attempt will not count 😅",
+                MAX_NUMBER
+            );
+            println!("{}", message.yellow());
+            continue;
+        }
 
         attempts += 1;
 

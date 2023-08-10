@@ -1,51 +1,23 @@
-use colored::*;
-use rand::Rng;
 use std::cmp::Ordering;
 use std::io;
+use colored::*;
+
+mod helpers;
+
+pub use crate::helpers::game_title::*;
+pub use crate::helpers::secret_number::*;
 
 // Use $ cargo doc --open to view the documentation
 
 const MAX_NUMBER: u32 = 100;
 const WRONG_NUMBER: u32 = 13;
 
-fn generate_secret_number() -> u32 {
-    let secret_number = rand::thread_rng().gen_range(1..=MAX_NUMBER);
-
-    if (secret_number == WRONG_NUMBER) {
-        return generate_secret_number();
-    }
-
-    return secret_number;
-}
-
 fn main() {
-    let game_title = "
-    ⠄⠄⠄⢀⣀⣤⣤⣤⣤⣤⣤⣄⣀⠄⠄⠄⠄⠄⠄⠄⣀⣀⣤⣄⡀⠄⠄⠄⠄⠄
-    ⠄⠄⣴⣿⣿⣉⣿⣿⡿⠿⠿⠿⠿⢿⣶⣦⡀⢠⣾⣿⣿⣿⣿⣿⣿⣦⡀⠄⠄⠄
-    ⠄⠐⣿⡿⠟⣛⣩⣥⣶⣶⣶⣶⣶⣶⣭⣍⣓⢹⣯⣥⣶⣶⣶⣶⣦⣽⣿⡄⠄⠄
-    ⣠⣾⡟⣿⣿⣿⣿⠿⢛⣫⣭⣭⣭⣭⣝⡛⢿⠎⢋⣩⣭⣭⣭⣭⣭⣍⠙⠛⡄⠄
-    ⣿⣿⠇⢹⣿⢟⣵⣾⣿⣿⣿⡿⠛⠛⣿⣿⣦⠘⣿⣿⣿⣿⣿⣿⣿⠟⠛⢿⣶⣆
-    ⣿⣿⣶⣿⣿⢸⣿⣿⣿⣿⣿⣧⣅⣴⣿⣿⠟⡘⠻⢿⣿⣿⣿⣿⣿⣷⣥⣾⡿⢛
-    ⢻⣿⣿⣿⣿⣷⣍⣛⣛⣛⣛⣛⣛⣫⣵⣶⣿⢋⣾⣶⣦⣬⣭⣭⣭⣭⣭⠴⠖⠋
-    ⣾⣿⣿⣿⣿⣿⣿⣶⣭⣭⣭⣭⣥⣶⣾⠟⣱⣿⣷⣦⣩⣉⣉⣉⣭⣶⣶⣷⠄⠄
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⢟⣛⣛⣅⠄
-    ⣿⣿⣿⡿⢏⣭⣭⣭⣉⣙⣛⣛⣛⣋⣉⣩⣭⣥⣶⣶⣶⠶⠶⠾⣛⣛⣛⡻⠃⠄
-    ⣿⣿⣿⣷⡜⢿⣿⣭⠭⠭⠭⣭⣭⣭⣭⣥⣶⣶⣶⣶⣶⣿⡿⠿⣛⡹⠛⠁⠄⠄
-    ⠿⠿⠿⣧⣜⣷⣶⣶⣿⠿⣷⣶⣦⣤⣭⣭⣭⣭⣤⣤⣤⣴⠾⠟⠃⠄⠄⠄⠄⠄
-    ⢀⣴⣷⣶⣶⣶⣶⣭⣭⣭⣤⣒⣒⣒⣒⣒⣛⣩⣭⣭⣶⣶⣤⡀⠄⠄⠄⠄⠄⠄
-    ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠄⠄⠄⠄⠄
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠄⠄⠄⠄
-    .⣿⣿⣿⣿⣿ GUESS THE NUMBER ⣷⣿⣷⣿⣷ 
-    ";
-
-    println!("{}", game_title.green());
-
-    // Generate a random number from 1 to 100
-    // The lower bound is inclusive and the upper bound is exclusive
-    // If you wanted to include the upper bound, you would use `..=`
-    // Example: `1..=100`
-    let secret_number = generate_secret_number();
+    
+    let secret_number = generate_secret_number(MAX_NUMBER, WRONG_NUMBER);
     let mut attempts = 0;
+
+    show_game_title();
 
     loop {
         println!("Please input your guess or type 'quit' to exit.");

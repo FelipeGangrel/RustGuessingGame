@@ -5,6 +5,19 @@ use std::io;
 
 // Use $ cargo doc --open to view the documentation
 
+const MAX_NUMBER: u32 = 100;
+const WRONG_NUMBER: u32 = 13;
+
+fn generate_secret_number() -> u32 {
+    let secret_number = rand::thread_rng().gen_range(1..=MAX_NUMBER);
+
+    if (secret_number == WRONG_NUMBER) {
+        return generate_secret_number();
+    }
+
+    return secret_number;
+}
+
 fn main() {
     let game_title = "
     ⠄⠄⠄⢀⣀⣤⣤⣤⣤⣤⣤⣄⣀⠄⠄⠄⠄⠄⠄⠄⣀⣀⣤⣄⡀⠄⠄⠄⠄⠄
@@ -26,13 +39,12 @@ fn main() {
     ";
 
     println!("{}", game_title.green());
-    const MAX_NUMBER: u32 = 100;
 
     // Generate a random number from 1 to 100
     // The lower bound is inclusive and the upper bound is exclusive
     // If you wanted to include the upper bound, you would use `..=`
     // Example: `1..=100`
-    let secret_number = rand::thread_rng().gen_range(1..MAX_NUMBER + 1);
+    let secret_number = generate_secret_number();
     let mut attempts = 0;
 
     loop {
@@ -65,6 +77,11 @@ fn main() {
         }
 
         attempts += 1;
+
+        if (guess == WRONG_NUMBER) {
+            println!("{}", "COMUNISTA!".red().bold());
+            continue;
+        }
 
         match guess.cmp(&secret_number) {
             Ordering::Less => println!("Too small!"),

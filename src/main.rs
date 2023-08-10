@@ -50,7 +50,7 @@ fn main() {
 
         attempts += 1;
 
-        if (guess == WRONG_NUMBER) {
+        if guess == WRONG_NUMBER {
             println!("{}", "COMUNISTA!".red().bold());
             continue;
         }
